@@ -1,6 +1,6 @@
 {
   "name": "realm-stack",
-  "version": "1.0.-1",
+  "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -22,7 +22,7 @@
     "typescript": "^4.5.3"
   },
   "dependencies": {
-    "dynamic-realm": "^1.0.23",
+    "dynamic-realm": "^1.0.27",
     "realm": "^10.10.1"
   }
 }
