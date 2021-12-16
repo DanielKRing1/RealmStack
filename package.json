@@ -4,13 +4,18 @@
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "files": [
+    "dist/**/*"
+  ],
   "scripts": {
     "test": "npm run build && npx jest",
     "build": "tsc -p tsconfig-build.json",
+    "build:commit": "npm run commit -- \"New build\"",
     "patch": "npm version patch",
     "commit": "git add . && git commit -m ",
     "push": "git push origin main",
-    "pub": "npm run build && npm run commit -- \"New build\" && npm run patch && npm publish && npm run push"
+    "pub": "run-s build build:commit patch push pub:npm",
+    "pub:npm": "npm publish"
   },
   "author": "",
   "license": "ISC",
@@ -18,11 +23,12 @@
     "@asianpersonn/dict-utils": "^1.0.3",
     "@types/jest": "^27.0.3",
     "jest": "^27.4.4",
+    "npm-run-all": "^4.1.5",
     "ts-jest": "^27.1.1",
     "typescript": "^4.5.3"
   },
   "dependencies": {
-    "dynamic-realm": "^1.0.27",
+    "dynamic-realm": "^1.0.29",
     "realm": "^10.10.1"
   }
 }
