@@ -1259,10 +1259,10 @@ domexception@^2.0.1:
   dependencies:
     webidl-conversions "^5.0.0"
 
-dynamic-realm@^1.0.21:
-  version "1.0.21"
-  resolved "https://registry.yarnpkg.com/dynamic-realm/-/dynamic-realm-1.0.21.tgz#e3557702de236f8eaf0b3052c86cf23c2bbd6d13"
-  integrity sha512-U1I9GhyaKdFyx4lSI7E4WI4Oyx9AUSwbHqPfngu5CH5geiIgsD75CzEtRNy9NkswZl//ctLmvwPLZE86x1ByYg==
+dynamic-realm@^1.0.23:
+  version "1.0.23"
+  resolved "https://registry.yarnpkg.com/dynamic-realm/-/dynamic-realm-1.0.23.tgz#f43bdfc2ae6ac58d7487769d0dcfe3455694c868"
+  integrity sha512-2/rO3+Afk5E0HhtSw4DIot0ZrIEBccKj+MmUa7n3iSoW+AQiqR3UNMrZPG6Vggi/Ud2fy13Uylhl77PcHLY4DQ==
   dependencies:
     realm "^10.8.0"
 
