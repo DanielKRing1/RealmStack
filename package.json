@@ -14,7 +14,7 @@
     "patch": "npm version patch",
     "commit": "git add . && git commit -m ",
     "push": "git push origin main",
-    "pub": "run-s build build:commit patch push pub:npm",
+    "pub": "run-s -c build build:commit patch push pub:npm",
     "pub:npm": "npm publish"
   },
   "author": "",
