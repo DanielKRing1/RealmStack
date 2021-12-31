@@ -6,11 +6,11 @@ import { MISSING_STACK_LIST_ROW_ERROR, NO_STACK_REALM_ERROR } from './errors';
 
 import StackRealmCache from '../stackRealmCache';
 
-export const getStackNames = (): string[] => {
+export const getStackNames = (stackRealmPath: string = DEFAULT_REALM_PATH_STACK): string[] => {
     const schemaNames: Set<string> = new Set<string>();
 
     // 1. Get all schema names
-    const allSchemaNames: string[] = DynamicRealm.getSchemaNames(DEFAULT_REALM_PATH_STACK);
+    const allSchemaNames: string[] = DynamicRealm.getSchemaNames(stackRealmPath);
 
     // 2. Remove schema name suffix and add to set (removes duplicate StackList and StackSnapshot schema names)
     allSchemaNames.forEach((schemaName) => {
