@@ -6,7 +6,7 @@ import { MISSING_STACK_LIST_ROW_ERROR, NO_STACK_REALM_ERROR } from './errors';
 
 import StackRealmCache from '../stackRealmCache';
 
-export const getStackNames = (stackRealmPath: string = DEFAULT_REALM_PATH_STACK): string[] => {
+export const getStackNames = (stackRealmPath: string | undefined = undefined): string[] => {
     const schemaNames: Set<string> = new Set<string>();
 
     // 1. Get all schema names

@@ -76,10 +76,8 @@ export class _StackRealmCache {
     };
 
     async loadStacks(stackRealmPath: string) {
-        console.log(stackRealmPath);
         // 1. Get stacks
         const stackNames: string[] = getStackNames(stackRealmPath);
-        console.log(stackNames);
         
         // 2. Track stacks
         const newRealm: Realm = await DynamicRealm.loadRealm(stackRealmPath);
@@ -87,9 +85,6 @@ export class _StackRealmCache {
 
         // 3. Track realm
         this._addRealm(newRealm);
-
-        console.log(this._stackCache);
-        console.log(this._realmCache);
     }
 
     addStackRealm(stackName: string, realm: Realm) {

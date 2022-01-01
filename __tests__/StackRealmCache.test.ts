@@ -46,20 +46,20 @@ const realm3Stack2Props: Dict<string> = {
 };
 
 describe('StackRealmCache', () => {
-    it('Should add 1 to many stacks to a single realm', () => {
-        StackRealmCache.createStack({
+    it('Should add 1 to many stacks to a single realm', async () => {
+        await StackRealmCache.createStack({
             dynamicRealmPath: DYNAMIC_REALM_PATH,
             stackRealmPath: realmStackPath1,
             stackName: realm1StackName1,
             snapshotProperties: realm1Stack1Props,
         });
-        StackRealmCache.createStack({
+        await StackRealmCache.createStack({
             dynamicRealmPath: DYNAMIC_REALM_PATH,
             stackRealmPath: realmStackPath1,
             stackName: realm1StackName2,
             snapshotProperties: realm1Stack2Props,
         });
-        StackRealmCache.createStack({
+        await StackRealmCache.createStack({
             dynamicRealmPath: DYNAMIC_REALM_PATH,
             stackRealmPath: realmStackPath1,
             stackName: realm1StackName3,
@@ -73,26 +73,26 @@ describe('StackRealmCache', () => {
     expect(getStackNames(realmStackPath3)).toEqual([]);
     });
 
-    it('Should add stacks to 1 to many realms', () => {
-        StackRealmCache.createStack({
+    it('Should add stacks to Realms 2 and 3; more than a single realm', async () => {
+        await StackRealmCache.createStack({
             dynamicRealmPath: DYNAMIC_REALM_PATH,
             stackRealmPath: realmStackPath2,
             stackName: realm2StackName1,
             snapshotProperties: realm2Stack1Props,
         });
-        StackRealmCache.createStack({
+        await StackRealmCache.createStack({
             dynamicRealmPath: DYNAMIC_REALM_PATH,
             stackRealmPath: realmStackPath2,
             stackName: realm2StackName2,
             snapshotProperties: realm2Stack2Props,
         });
-        StackRealmCache.createStack({
+        await StackRealmCache.createStack({
             dynamicRealmPath: DYNAMIC_REALM_PATH,
             stackRealmPath: realmStackPath3,
             stackName: realm3StackName1,
             snapshotProperties: realm3Stack1Props,
         });
-        StackRealmCache.createStack({
+        await StackRealmCache.createStack({
             dynamicRealmPath: DYNAMIC_REALM_PATH,
             stackRealmPath: realmStackPath3,
             stackName: realm3StackName2,
@@ -115,11 +115,13 @@ describe('StackRealmCache', () => {
         stackRealmCache._realmCache = {};
 
         const expectedStackNames1: string[] = [ realm1StackName1, realm1StackName2, realm1StackName3 ];
-        const expectedStackNames2: string[] = [ ...expectedStackNames1, realm2StackName1, realm2StackName2 ];
-        const expectedStackNames3: string[] = [ ...expectedStackNames2, realm3StackName1, realm3StackName2 ];
+        const expectedStackNames2: string[] = [ realm2StackName1, realm2StackName2 ];
+        const expectedStackNames3: string[] = [ realm3StackName1, realm3StackName2 ];
 
         // 1. Should still have all stack names
-        expect(getStackNames(realmStackPath1)).toEqual(expectedStackNames3);
+        expect(getStackNames(realmStackPath1)).toEqual(expectedStackNames1);
+        expect(getStackNames(realmStackPath2)).toEqual(expectedStackNames2);
+        expect(getStackNames(realmStackPath3)).toEqual(expectedStackNames3);
 
     });
 
@@ -136,7 +138,7 @@ describe('StackRealmCache', () => {
         expect(getStackNames()).toEqual(allStackNames);
     });
     
-    it('Should expose all stack names', () => {
+    it('Should expose each realm\'s stack names', () => {
         const realm1StackNames: string[] = [
             'Realm1Stack1',
             'Realm1Stack2',
@@ -169,17 +171,13 @@ describe('StackRealmCache', () => {
         // REALM PATH 2
         await StackRealmCache.loadStacks(realmStackPath2);
 
-        console.log(StackRealmCache.getLoadedStackNames());
-
         const expectedStackNames1: string[] = [ realm1StackName1, realm1StackName2, realm1StackName3, realm2StackName1, realm2StackName2 ];
         expect(StackRealmCache.getLoadedStackNames()).toEqual(expectedStackNames1);
 
         // REALM PATH 3
         await StackRealmCache.loadStacks(realmStackPath3);
 
-        console.log(StackRealmCache.getLoadedStackNames());
-
         const expectedStackNames2: string[] = [ ...expectedStackNames1, realm3StackName1, realm3StackName2 ];
-        expect(getStackNames(realmStackPath1)).toEqual(expectedStackNames2);
+        expect(StackRealmCache.getLoadedStackNames()).toEqual(expectedStackNames2);
     });
 });
