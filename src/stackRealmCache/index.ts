@@ -1,12 +1,16 @@
 import DynamicRealm from 'dynamic-realm';
 
 import { getStackNames } from '../stackMethods';
-import { getSnapshotSchemaName, COLUMN_NAME_SNAPSHOT_TIMESTAMP, getStackSchemaName, PK_STACK_LIST_ROW, DEFAULT_REALM_PATH_STACK, DEFAULT_REALM_PATH_DYNAMIC_REALM } from '../stackMethods/constants';
+import { getSnapshotSchemaName, COLUMN_NAME_SNAPSHOT_TIMESTAMP, getStackSchemaName, PK_STACK_LIST_ROW, DEFAULT_META_REALM_PATH, DEFAULT_LOADABLE_REALM_PATH } from '../stackMethods/constants';
+import { SUFFIX_DELIMITER } from './constants';
 
-type RealmPath = string;
+type RealmPaths = {
+    metaRealmPath: string;
+    loadableRealmPath: string;
+};
 
 export type CreateStackParams = {
-    dynamicRealmPath: string;
+    metaRealmPath: string;
     stackRealmPath: string;
     stackName: string;
     snapshotProperties: Dict<any>;
@@ -43,25 +47,25 @@ const genStackSchemas = (stackName: string, snapshotProperties: Dict<any>): Stac
 };
 
 export class _StackRealmCache {
-    _stackCache: Dict<RealmPath> = {};
+    _stackCache: Dict<RealmPaths> = {};
     _realmCache: Dict<Realm> = {};
 
     constructor() {}
 
-    async createStack({ dynamicRealmPath = DEFAULT_REALM_PATH_DYNAMIC_REALM, stackRealmPath = DEFAULT_REALM_PATH_STACK, stackName, snapshotProperties }: CreateStackParams): Promise<Realm> {
+    async createStack({ metaRealmPath = DEFAULT_META_REALM_PATH, stackRealmPath = DEFAULT_LOADABLE_REALM_PATH, stackName, snapshotProperties }: CreateStackParams): Promise<Realm> {
         const { snapshotSchema, stackSchema } = genStackSchemas(stackName, snapshotProperties);
 
         // 1. Init DynamicRealm if not already initialized
-        await DynamicRealm.init({ realmPath: dynamicRealmPath, force: false });
+        await DynamicRealm.openMetaRealm({ metaRealmPath, force: false });
 
         // 2. Save Snapshot schema to DynamicRealm
-        DynamicRealm.saveSchema({ realmPath: stackRealmPath, schema: snapshotSchema, overwrite: false });
+        DynamicRealm.saveSchema({ metaRealmPath, loadableRealmPath: stackRealmPath, schema: snapshotSchema, overwrite: false });
 
         // 3. Save Stack schema to DynamicRealm
-        DynamicRealm.saveSchema({ realmPath: stackRealmPath, schema: stackSchema, overwrite: false });
+        DynamicRealm.saveSchema({ metaRealmPath, loadableRealmPath: stackRealmPath, schema: stackSchema, overwrite: false });
 
         // 4. Create stack row in Stack schema
-        const newRealm: Realm = await DynamicRealm.loadRealm(stackRealmPath);
+        const newRealm: Realm = await DynamicRealm.loadRealm(metaRealmPath, stackRealmPath);
         newRealm.write(() => {
             newRealm.create(stackSchema.name, {
                 name: PK_STACK_LIST_ROW,
@@ -70,21 +74,21 @@ export class _StackRealmCache {
         });
 
         // 5. Add to StackCache
-        this.addStackRealm(stackName, stackRealmPath, newRealm);
+        this.addStackRealm(metaRealmPath, stackRealmPath, stackName, newRealm);
 
         return newRealm;
     }
 
-    async loadStacks(stackRealmPath: string) {
+    async loadStacks(metaRealmPath: string, loadableRealmPath: string) {
         // 1. Get stacks
-        const stackNames: string[] = getStackNames(stackRealmPath);
+        const stackNames: string[] = getStackNames(metaRealmPath, loadableRealmPath);
 
         // 2. Track stacks
-        const newRealm: Realm = await DynamicRealm.loadRealm(stackRealmPath);
-        for (let stackName of stackNames) this._addStack(stackName, stackRealmPath);
+        const newRealm: Realm = await DynamicRealm.loadRealm(metaRealmPath, loadableRealmPath);
+        for (let stackName of stackNames) this._addStack(metaRealmPath, loadableRealmPath, stackName);
 
         // 3. Track realm
-        this._addRealm(stackRealmPath, newRealm);
+        this._addRealm(metaRealmPath, loadableRealmPath, newRealm);
     }
 
     /**
@@ -94,16 +98,21 @@ export class _StackRealmCache {
      *  StackRealmCache caches Realms and Stack names by the user's chosen realm path
      * @param realm
      */
-    addStackRealm(stackName: string, userRealmPath: string, realm: Realm) {
+    addStackRealm(metaRealmPath: string, loadableRealmPath: string, stackName: string, realm: Realm) {
         // Force close existing Realms
         if (this.hasStackRealm(stackName)) this.getStackRealm(stackName)?.close();
 
-        this._addStack(stackName, userRealmPath);
-        this._addRealm(userRealmPath, realm);
+        this._addStack(metaRealmPath, loadableRealmPath, stackName);
+        this._addRealm(metaRealmPath, loadableRealmPath, realm);
     }
 
-    _addStack(stackName: string, userRealmPath: string) {
-        this._stackCache[stackName] = userRealmPath;
+    _genRealmPathKey(metaRealmPath: string, loadableRealmPath: string) { return `${metaRealmPath}${SUFFIX_DELIMITER}${loadableRealmPath}`; }
+
+    _addStack(metaRealmPath: string, loadableRealmPath: string, stackName: string) {
+        this._stackCache[stackName] = {
+            metaRealmPath,
+            loadableRealmPath,
+        };
     }
     /**
      *
@@ -112,14 +121,15 @@ export class _StackRealmCache {
      *  StackRealmCache caches Realms and Stack names by the user's chosen realm path
      * @param realm
      */
-    _addRealm(userRealmPath: string, realm: Realm) {
-        this._realmCache[userRealmPath] = realm;
+    _addRealm(metaRealmPath: string, loadableRealmPath: string, realm: Realm) {
+        const realmPathKey: string = this._genRealmPathKey(metaRealmPath, loadableRealmPath);
+        this._realmCache[realmPathKey] = realm;
     }
 
     getStackRealm(stackName: string): Realm | undefined {
         if (this.hasStackRealm(stackName)) {
-            const realmPath: RealmPath = this._stackCache[stackName];
-            return this.getRealm(realmPath);
+            const { metaRealmPath, loadableRealmPath }: RealmPaths = this._stackCache[stackName];
+            return this.getRealm(metaRealmPath, loadableRealmPath);
         }
     }
 
@@ -135,8 +145,9 @@ export class _StackRealmCache {
         return Object.keys(this._stackCache);
     }
 
-    getRealm(realmPath: RealmPath): Realm | undefined {
-        if (this.hasRealm(realmPath)) return this._realmCache[realmPath];
+    getRealm(metaRealmPath, loadableRealmPath): Realm | undefined {
+        const realmPathKey: string = this._genRealmPathKey(metaRealmPath, loadableRealmPath);
+        if (this.hasRealm(metaRealmPath, loadableRealmPath)) return this._realmCache[realmPathKey];
     }
 
     hasStackRealm(stackName: string): boolean {
@@ -144,12 +155,13 @@ export class _StackRealmCache {
         if (!this._stackCache.hasOwnProperty(stackName)) return false;
 
         // 2. Get RealmPath -> Realm
-        const realmPath: RealmPath = this._stackCache[stackName];
-        return this.hasRealm(realmPath);
+        const { metaRealmPath, loadableRealmPath }: RealmPaths = this._stackCache[stackName];
+        return this.hasRealm(metaRealmPath, loadableRealmPath);
     }
 
-    hasRealm(realmPath: RealmPath): boolean {
-        return !!this._realmCache[realmPath];
+    hasRealm(metaRealmPath: string, loadableRealmPath: string): boolean {
+        const realmPathKey: string = this._genRealmPathKey(metaRealmPath, loadableRealmPath);
+        return !!this._realmCache[realmPathKey];
     }
 }
 

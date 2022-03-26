@@ -1,16 +1,16 @@
 import DynamicRealm from 'dynamic-realm';
 
 import { binarySearch } from '../utils/binarySearch';
-import { COLUMN_NAME_SNAPSHOT_TIMESTAMP, PK_STACK_LIST_ROW, DEFAULT_REALM_PATH_STACK, SCHEMA_NAME_DELIMITER, getSnapshotSchemaName, getStackSchemaName, getBaseNameFromSchemaName } from './constants';
+import { COLUMN_NAME_SNAPSHOT_TIMESTAMP, PK_STACK_LIST_ROW, DEFAULT_LOADABLE_REALM_PATH, SCHEMA_NAME_DELIMITER, getSnapshotSchemaName, getStackSchemaName, getBaseNameFromSchemaName } from './constants';
 import { MISSING_STACK_LIST_ROW_ERROR, NO_STACK_REALM_ERROR } from './errors';
 
 import StackRealmCache from '../stackRealmCache';
 
-export const getStackNames = (stackRealmPath: string | undefined = undefined): string[] => {
+export const getStackNames = (metaRealmPath: string, stackRealmPath: string | undefined = undefined): string[] => {
     const schemaNames: Set<string> = new Set<string>();
 
     // 1. Get all schema names
-    const allSchemaNames: string[] = DynamicRealm.getSchemaNames(stackRealmPath);
+    const allSchemaNames: string[] = DynamicRealm.getSchemaNames(metaRealmPath, stackRealmPath);
 
     // 2. Remove schema name suffix and add to set (removes duplicate StackList and StackSnapshot schema names)
     allSchemaNames.forEach((schemaName) => {
@@ -24,8 +24,8 @@ export const getStackNames = (stackRealmPath: string | undefined = undefined): s
     return Array.from(schemaNames);
 };
 
-export const getStackProperties = (stackName: string): Realm.PropertiesTypes => {
-    return DynamicRealm.getProperties(getSnapshotSchemaName(stackName));
+export const getStackProperties = (metaRealmPath: string, stackName: string): Realm.PropertiesTypes => {
+    return DynamicRealm.getProperties(metaRealmPath, getSnapshotSchemaName(stackName));
 };
 
 export const getStack = (stackName: string): StackListRow & Realm.Object => {

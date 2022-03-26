@@ -1,9 +1,9 @@
-jest.mock('realm');
+jest.mock('realm', () => require('@asianpersonn/realm-mock'));
 
 import DictUtils from '@asianpersonn/dict-utils';
 import RealmStack from '../src';
 
-const dynamicRealmPath: string = 'dynamic-realm.path';
+const TEST_META_REALM_PATH: string = 'TEST_META_REALM_PATH.path';
 
 const stackRealmPath1: string = 'stack-realm1.path';
 const stackName1: string = 'MyStack1';
@@ -39,21 +39,21 @@ let searchDate3: Date[] = [];
 describe('RealmStack', () => {
     it('Should be able to create a stack', async () => {
         await RealmStack.createStack({
-            dynamicRealmPath,
+            metaRealmPath: TEST_META_REALM_PATH,
             stackRealmPath: stackRealmPath1,
             stackName: stackName1,
             snapshotProperties: stackProperties1,
         });
 
         await RealmStack.createStack({
-            dynamicRealmPath,
+            metaRealmPath: TEST_META_REALM_PATH,
             stackRealmPath: stackRealmPath2,
             stackName: stackName2,
             snapshotProperties: stackProperties2,
         });
 
         await RealmStack.createStack({
-            dynamicRealmPath,
+            metaRealmPath: TEST_META_REALM_PATH,
             stackRealmPath: stackRealmPath3,
             stackName: stackName3,
             snapshotProperties: stackProperties3,
@@ -97,11 +97,11 @@ describe('RealmStack', () => {
     });
 
     it('Should be able to read its stacks', async () => {
-        expect(RealmStack.getStackNames()).toEqual([ stackName1, stackName2, stackName3 ]);
+        expect(RealmStack.getStackNames(TEST_META_REALM_PATH)).toEqual([ stackName1, stackName2, stackName3 ]);
 
-        expect(RealmStack.getStackProperties(stackName1)).toEqual({ ...stackProperties1, timestamp: 'date' });
-        expect(RealmStack.getStackProperties(stackName2)).toEqual({ ...stackProperties2, timestamp: 'date' });
-        expect(RealmStack.getStackProperties(stackName3)).toEqual({ ...stackProperties3, timestamp: 'date' });
+        expect(RealmStack.getStackProperties(TEST_META_REALM_PATH, stackName1)).toEqual({ ...stackProperties1, timestamp: 'date' });
+        expect(RealmStack.getStackProperties(TEST_META_REALM_PATH, stackName2)).toEqual({ ...stackProperties2, timestamp: 'date' });
+        expect(RealmStack.getStackProperties(TEST_META_REALM_PATH, stackName3)).toEqual({ ...stackProperties3, timestamp: 'date' });
 
         const expectedList1: Dict<string | Date>[] = [
             { ...snapshot1, timestamp: searchDate1[2] },

@@ -1,6 +1,6 @@
 // Realm paths
-export const DEFAULT_REALM_PATH_DYNAMIC_REALM = 'dynamic-realm.path';
-export const DEFAULT_REALM_PATH_STACK = 'stack-realm.path';
+export const DEFAULT_META_REALM_PATH = 'stack-meta_realm.path';
+export const DEFAULT_LOADABLE_REALM_PATH = 'stack-loadable_realm.path';
 
 // Primary keys
 export const PK_STACK_LIST_ROW = 'STACK_LIST_ROW';
