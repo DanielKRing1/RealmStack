@@ -52,11 +52,15 @@ export class _StackRealmCache {
 
     constructor() {}
 
+    async tryInitMetaRealm(metaRealmPath: string) {
+        await DynamicRealm.openMetaRealm({ metaRealmPath, force: false });
+    }
+
     async createStack({ metaRealmPath = DEFAULT_META_REALM_PATH, stackRealmPath = DEFAULT_LOADABLE_REALM_PATH, stackName, snapshotProperties }: CreateStackParams): Promise<Realm> {
         const { snapshotSchema, stackSchema } = genStackSchemas(stackName, snapshotProperties);
 
         // 1. Init DynamicRealm if not already initialized
-        await DynamicRealm.openMetaRealm({ metaRealmPath, force: false });
+        await this.tryInitMetaRealm(metaRealmPath);
 
         // 2. Save Snapshot schema to DynamicRealm
         DynamicRealm.saveSchema({ metaRealmPath, loadableRealmPath: stackRealmPath, schema: snapshotSchema, overwrite: false });
@@ -80,14 +84,17 @@ export class _StackRealmCache {
     }
 
     async loadStacks(metaRealmPath: string, loadableRealmPath: string) {
-        // 1. Get stacks
+        // 1. Init DynamicRealm if not already initialized
+        await this.tryInitMetaRealm(metaRealmPath);
+
+        // 2. Get stacks
         const stackNames: string[] = getStackNames(metaRealmPath, loadableRealmPath);
 
-        // 2. Track stacks
+        // 3. Track stacks
         const newRealm: Realm = await DynamicRealm.loadRealm(metaRealmPath, loadableRealmPath);
         for (let stackName of stackNames) this._addStack(metaRealmPath, loadableRealmPath, stackName);
 
-        // 3. Track realm
+        // 4. Track realm
         this._addRealm(metaRealmPath, loadableRealmPath, newRealm);
     }
 
