@@ -38,8 +38,6 @@ export const getStack = (stackName: string): StackListRow & Realm.Object => {
     // 2. Get Stack list
     const stackSchemaName: string = getStackSchemaName(stackName);
     const stack: (StackListRow & Realm.Object) | undefined = realm.objectForPrimaryKey(stackSchemaName, PK_STACK_LIST_ROW);
-    // console.log(realm.objects(stackSchemaName));
-    // console.log(stack);
     if (!stack) throw MISSING_STACK_LIST_ROW_ERROR(stackSchemaName);
 
     return stack;

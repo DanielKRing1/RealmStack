@@ -90,12 +90,14 @@ export class _StackRealmCache {
         // 2. Get stacks
         const stackNames: string[] = getStackNames(metaRealmPath, loadableRealmPath);
 
-        // 3. Track stacks
+        // 3. Track stacks and new Realm
         const newRealm: Realm = await DynamicRealm.loadRealm(metaRealmPath, loadableRealmPath);
-        for (let stackName of stackNames) this._addStack(metaRealmPath, loadableRealmPath, stackName);
+        for (let stackName of stackNames) this.addStackRealm(metaRealmPath, loadableRealmPath, stackName, newRealm, false);
+        
+        // for (let stackName of stackNames) this._addStack(metaRealmPath, loadableRealmPath, stackName);
 
-        // 4. Track realm
-        this._addRealm(metaRealmPath, loadableRealmPath, newRealm);
+        // // 4. Track realm
+        // this._addRealm(metaRealmPath, loadableRealmPath, newRealm);
     }
 
     /**
@@ -105,9 +107,9 @@ export class _StackRealmCache {
      *  StackRealmCache caches Realms and Stack names by the user's chosen realm path
      * @param realm
      */
-    addStackRealm(metaRealmPath: string, loadableRealmPath: string, stackName: string, realm: Realm) {
+    addStackRealm(metaRealmPath: string, loadableRealmPath: string, stackName: string, realm: Realm, forceClose: boolean = true) {
         // Force close existing Realms
-        if (this.hasStackRealm(stackName)) this.getStackRealm(stackName)?.close();
+        if (forceClose && this.hasStackRealm(stackName)) this.getStackRealm(stackName)?.close();
 
         this._addStack(metaRealmPath, loadableRealmPath, stackName);
         this._addRealm(metaRealmPath, loadableRealmPath, realm);
