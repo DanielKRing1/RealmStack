@@ -48,6 +48,8 @@ export const getClosestDate = (stackName: string, searchDate: Date): number => {
     const stack: StackListRow & Realm.Object = getStack(stackName);
     const list: Realm.List<StackSnapshotRow> = stack.list;
 
+    if(list.length === 0 ) return -1;
+
     // EDGE CASES
     // [ newest time, ..., oldest time ] (Descending order)
 
@@ -62,9 +64,11 @@ export const getClosestDate = (stackName: string, searchDate: Date): number => {
 };
 
 export function getDateInStackGTE(searchDate: Date, list: Realm.List<StackSnapshotRow>): number {
+    if(list.length === 0 ) return -1;
+
     const comparator = (midValue: StackSnapshotRow, searchDate: Date): -1 | 0 | 1 => {
-        if(midValue[COLUMN_NAME_SNAPSHOT_TIMESTAMP] < searchDate) return -1;
-        else if (searchDate < midValue[COLUMN_NAME_SNAPSHOT_TIMESTAMP]) return 1;
+        if(midValue[COLUMN_NAME_SNAPSHOT_TIMESTAMP] !== undefined && midValue[COLUMN_NAME_SNAPSHOT_TIMESTAMP] < searchDate) return -1;
+        else if (midValue[COLUMN_NAME_SNAPSHOT_TIMESTAMP] !== undefined && searchDate < midValue[COLUMN_NAME_SNAPSHOT_TIMESTAMP]) return 1;
         else  return 0;
     };
 
