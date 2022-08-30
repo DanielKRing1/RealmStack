@@ -70,12 +70,17 @@ export class _StackRealmCache {
 
         // 4. Create stack row in Stack schema
         const newRealm: Realm = await DynamicRealm.loadRealm(metaRealmPath, stackRealmPath);
-        newRealm.write(() => {
-            newRealm.create(stackSchema.name, {
-                name: PK_STACK_LIST_ROW,
-                list: [],
+        try {
+            newRealm.write(() => {
+                newRealm.create(stackSchema.name, {
+                    name: PK_STACK_LIST_ROW,
+                    list: [],
+                });
             });
-        });
+        } catch (err) {
+            // Error thrown to prevent writing duplicate; Do nothing
+            console.log(err);
+        }
 
         // 5. Add to StackCache
         this.addStackRealm(metaRealmPath, stackRealmPath, stackName, newRealm);
