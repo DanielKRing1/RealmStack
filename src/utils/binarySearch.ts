@@ -24,9 +24,7 @@ export function binarySearch<T>(searchValue: any, list: T[], comparator: (midVal
  * @param stopIndex 
  * @returns 
  */
- export function binarySearchClosest<T>(searchValue: any, list: T[], comparator: (midValue: T, seachValue: any) => number, startIndex: number = 0, stopIndex: number = list.length - 1): number {
-    let l = 0;
-    let r = list.length - 1;
+ export function binarySearchClosest<T>(searchValue: any, list: T[], comparator: (midValue: T, seachValue: any) => number, l: number = 0, r: number = list.length - 1): number {
 
     while(l <= r) {
         const midIndex = Math.floor((l + r) / 2);

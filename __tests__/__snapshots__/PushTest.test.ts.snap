@@ -1,0 +1,181 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RealmStackManager Should get lists from Stacks 1-2 1`] = `
+Array [
+  Object {
+    "prop1": 0,
+    "prop2": "Hello",
+    "timestamp": 2022-09-01T07:00:00.000Z,
+  },
+  Object {
+    "prop1": 0,
+    "prop2": "World",
+    "timestamp": 2022-09-02T07:00:00.000Z,
+  },
+  Object {
+    "prop1": 1,
+    "prop2": "Hello2",
+    "timestamp": 2022-09-03T07:00:00.000Z,
+  },
+  Object {
+    "prop1": 1,
+    "prop2": "World2",
+    "timestamp": 2022-09-04T07:00:00.000Z,
+  },
+  Object {
+    "prop1": 2,
+    "prop2": "Hello3",
+    "timestamp": 2022-09-05T07:00:00.000Z,
+  },
+  Object {
+    "prop1": 3,
+    "prop2": "World3",
+    "timestamp": 2022-09-06T07:00:00.000Z,
+  },
+  Object {
+    "prop1": 4,
+    "prop2": "Hello4",
+    "timestamp": 2022-09-07T07:00:00.000Z,
+  },
+  Object {
+    "prop1": 5,
+    "prop2": "World4",
+    "timestamp": 2022-09-08T07:00:00.000Z,
+  },
+]
+`;
+
+exports[`RealmStackManager Should get lists from Stacks 1-2 2`] = `
+Array [
+  Object {
+    "prop1": 5,
+    "prop2": "World4",
+    "timestamp": 2022-09-08T07:00:00.000Z,
+  },
+  Object {
+    "prop1": 4,
+    "prop2": "Hello4",
+    "timestamp": 2022-09-07T07:00:00.000Z,
+  },
+  Object {
+    "prop1": 3,
+    "prop2": "World3",
+    "timestamp": 2022-09-06T07:00:00.000Z,
+  },
+  Object {
+    "prop1": 2,
+    "prop2": "Hello3",
+    "timestamp": 2022-09-05T07:00:00.000Z,
+  },
+  Object {
+    "prop1": 1,
+    "prop2": "World2",
+    "timestamp": 2022-09-04T07:00:00.000Z,
+  },
+  Object {
+    "prop1": 1,
+    "prop2": "Hello2",
+    "timestamp": 2022-09-03T07:00:00.000Z,
+  },
+  Object {
+    "prop1": 0,
+    "prop2": "World",
+    "timestamp": 2022-09-02T07:00:00.000Z,
+  },
+  Object {
+    "prop1": 0,
+    "prop2": "Hello",
+    "timestamp": 2022-09-01T07:00:00.000Z,
+  },
+]
+`;
+
+exports[`RealmStackManager Should get lists from Stacks 1-2 3`] = `
+Array [
+  Object {
+    "prop3": 0,
+    "prop4": 2022-09-10T07:00:00.000Z,
+    "timestamp": 2022-09-01T07:00:00.000Z,
+  },
+  Object {
+    "prop3": 0,
+    "prop4": 2022-09-10T07:00:00.000Z,
+    "timestamp": 2022-09-02T07:00:00.000Z,
+  },
+  Object {
+    "prop3": 1,
+    "prop4": 2022-09-10T07:00:00.000Z,
+    "timestamp": 2022-09-03T07:00:00.000Z,
+  },
+  Object {
+    "prop3": 1,
+    "prop4": 2022-09-10T07:00:00.000Z,
+    "timestamp": 2022-09-04T07:00:00.000Z,
+  },
+  Object {
+    "prop3": 2,
+    "prop4": 2022-09-10T07:00:00.000Z,
+    "timestamp": 2022-09-05T07:00:00.000Z,
+  },
+  Object {
+    "prop3": 3,
+    "prop4": 2022-09-10T07:00:00.000Z,
+    "timestamp": 2022-09-06T07:00:00.000Z,
+  },
+  Object {
+    "prop3": 4,
+    "prop4": 2022-09-10T07:00:00.000Z,
+    "timestamp": 2022-09-07T07:00:00.000Z,
+  },
+  Object {
+    "prop3": 5,
+    "prop4": 2022-09-10T07:00:00.000Z,
+    "timestamp": 2022-09-08T07:00:00.000Z,
+  },
+]
+`;
+
+exports[`RealmStackManager Should get lists from Stacks 1-2 4`] = `
+Array [
+  Object {
+    "prop3": 5,
+    "prop4": 2022-09-10T07:00:00.000Z,
+    "timestamp": 2022-09-08T07:00:00.000Z,
+  },
+  Object {
+    "prop3": 4,
+    "prop4": 2022-09-10T07:00:00.000Z,
+    "timestamp": 2022-09-07T07:00:00.000Z,
+  },
+  Object {
+    "prop3": 3,
+    "prop4": 2022-09-10T07:00:00.000Z,
+    "timestamp": 2022-09-06T07:00:00.000Z,
+  },
+  Object {
+    "prop3": 2,
+    "prop4": 2022-09-10T07:00:00.000Z,
+    "timestamp": 2022-09-05T07:00:00.000Z,
+  },
+  Object {
+    "prop3": 1,
+    "prop4": 2022-09-10T07:00:00.000Z,
+    "timestamp": 2022-09-04T07:00:00.000Z,
+  },
+  Object {
+    "prop3": 1,
+    "prop4": 2022-09-10T07:00:00.000Z,
+    "timestamp": 2022-09-03T07:00:00.000Z,
+  },
+  Object {
+    "prop3": 0,
+    "prop4": 2022-09-10T07:00:00.000Z,
+    "timestamp": 2022-09-02T07:00:00.000Z,
+  },
+  Object {
+    "prop3": 0,
+    "prop4": 2022-09-10T07:00:00.000Z,
+    "timestamp": 2022-09-01T07:00:00.000Z,
+  },
+]
+`;

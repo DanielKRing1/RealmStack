@@ -7,6 +7,13 @@
   "resolved" "https://registry.npmjs.org/@asianpersonn/dict-utils/-/dict-utils-1.0.3.tgz"
   "version" "1.0.3"
 
+"@asianpersonn/metarealm@^1.0.4":
+  "integrity" "sha512-zoNaouxVpjftKYKDEAel1wTM9BnEKuXx3LBHA/9dduBxyEcoV8Pje/gmb295lRXXz3lJofZFNDn8+6aNi4MFvQ=="
+  "resolved" "https://registry.npmjs.org/@asianpersonn/metarealm/-/metarealm-1.0.4.tgz"
+  "version" "1.0.4"
+  dependencies:
+    "realm" "^10.13.0"
+
 "@asianpersonn/realm-mock@^1.0.4":
   "integrity" "sha512-aORK2dWEwDEmf/gM17yU6mIcQ4XUEc7ypXvXpHSPgdYlzVYdW8HS1PC/iTr0X6+bO5SHfDkPkxsubcYrfeKJUA=="
   "resolved" "https://registry.npmjs.org/@asianpersonn/realm-mock/-/realm-mock-1.0.4.tgz"
@@ -1288,13 +1295,6 @@
   "version" "2.0.1"
   dependencies:
     "webidl-conversions" "^5.0.0"
-
-"dynamic-realm@^1.0.45":
-  "integrity" "sha512-Ocbjy6dS4MVEWTkUs3Rw9qyGJ5/t3reBfikCibYaHnqDumFAnM4Uc3M4H7bS2XGL0iJYdM9nW2qYH+SY6D2/tA=="
-  "resolved" "https://registry.npmjs.org/dynamic-realm/-/dynamic-realm-1.0.45.tgz"
-  "version" "1.0.45"
-  dependencies:
-    "realm" "^10.13.0"
 
 "ecc-jsbn@~0.1.1":
   "integrity" "sha1-OoOpBOVDUyh4dMVkt1SThoSamMk="
