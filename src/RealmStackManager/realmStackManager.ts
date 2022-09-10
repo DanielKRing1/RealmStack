@@ -4,18 +4,7 @@ import { getBaseNameFromSchemaName } from '../constants/naming';
 
 import { createRealmStack, loadRealmStack } from "../RealmStack/realmStack";
 import { RealmStack, RSCreateParams } from "../RealmStack/types";
-
-
-type RealmStackManager = {
-    getStack: (stackName: string) => RealmStack | undefined;
-    createStack: (params: RSCreateParams) => Promise<RealmStack>;
-    rmStack: (stackName: string) => void;
-    loadStacks: (metaRealmPAth: string, loadableRealmPath: string) => Promise<number>;
-
-    getLoadableStackNames: (metaRealmPath: string, loadableRealmPath: string) => string[];
-    getAllLoadedStackNames: () => string[];
-    getAllLoadedStacks: () => RealmStack[];
-};
+import { RealmStackManager } from './types';
 
 const createStackManager = (): RealmStackManager => {
     const realmStackMap: Dict<RealmStack> = {};
