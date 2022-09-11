@@ -4,12 +4,17 @@ import { getBaseNameFromSchemaName } from '../constants/naming';
 
 import { createRealmStack, loadRealmStack } from "../RealmStack/realmStack";
 import { RealmStack, RSCreateParams } from "../RealmStack/types";
+import { gen_NO_STACK_ERROR } from './errors';
 import { RealmStackManager } from './types';
 
 const createStackManager = (): RealmStackManager => {
     const realmStackMap: Dict<RealmStack> = {};
     
-    const getStack = (stackName: string): RealmStack | undefined => realmStackMap[stackName];
+    const getStack = (stackName: string): RealmStack | never => {
+        if(!hasRealmStack(stackName)) throw gen_NO_STACK_ERROR(stackName);
+        
+        return realmStackMap[stackName];
+    }
     
     const createStack = async ({ metaRealmPath, loadableRealmPath, stackName, snapshotProperties }: RSCreateParams) => {
         // 1. Create new RealmStack if not exists

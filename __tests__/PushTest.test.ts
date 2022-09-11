@@ -47,6 +47,11 @@ describe('RealmStackManager', () => {
         await realmStackManager.loadStacks(META_REALM_PATH1, LOADABLE_REALM_PATH1);
     });
 
+    it('Should throw an error for a non-existant RealmStack name', async () => {
+        const NONEXISTANT_STACK_NAME: string = 'DUMMY_STACK_NAME';
+        expect(() => realmStackManager.getStack(NONEXISTANT_STACK_NAME)).toThrowError();
+    });
+
     it('Should push onto Stack1', async () => {
         const stack: RealmStack = realmStackManager.getStack(STACK_NAME1);
 
