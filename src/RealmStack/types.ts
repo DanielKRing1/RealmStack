@@ -46,6 +46,7 @@ export type RealmStack = {
     updateStack: (newSnapshotProperties: Dict<any>) => Promise<void>;
 
     push: (args: RSPushParams, ...snapshots: Dict<any>[]) => Promise<boolean>;
+    deleteIndexes: (indexes: number | number[]) => Promise<number>;
     getClosestDate: (searchDate: Date) => Promise<number>;
 
     loadRealm: () => Promise<Realm>;
@@ -56,7 +57,7 @@ export type RealmStack = {
 }
 export type RealmStackRow = {
     name: string;
-    list: Realm.List<RSSnapshot>;
+    list: Realm.List<Realm.Object & RSSnapshot>;
 }
 
 type RSSnapshotKeys = typeof COLUMN_NAME_SNAPSHOT_TIMESTAMP;

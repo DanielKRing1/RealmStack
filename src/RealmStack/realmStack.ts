@@ -118,10 +118,31 @@ const initializeRealmStack = ({ metaRealmPath, loadableRealmPath, stackName }: R
 
         // 4. Add snapshots to front of stack
         realm.write(() => {
-            stack.list.unshift(...formatedSnapshots);
+            stack.list.unshift(...formatedSnapshots as (Realm.Object & RSSnapshot)[]);
         });
 
         return true;
+    }
+
+    const deleteIndexes = async (indexes: number | number[]): Promise<number> => {
+        // 0. Make single index into an array of length 1
+        if(!Array.isArray(indexes)) indexes = [ indexes ];
+
+        // 1. Get realm
+        const realm: Realm = await MetaRealm.LoadableRealmManager.loadRealm({ metaRealmPath, loadableRealmPath });
+
+        // 2. Get Stack
+        const stack: (RealmStackRow & Realm.Object) | undefined = await getStackRow();
+        // 3. Short-circuit
+        if(stack.list === undefined) return 0;
+        
+        // 4. Get Snapshot entries to delete and filter out undefined rows
+        const toDelete: (Realm.Object & RSSnapshot)[] = indexes.map((index: number) => stack.list[index]).filter((row: Realm.Object & RSSnapshot) => row !== undefined);
+
+        // 5. Add snapshots to front of stack
+        realm.write(() => {
+            realm.delete(toDelete);
+        });
     }
 
     // SEARCH
@@ -174,6 +195,7 @@ const initializeRealmStack = ({ metaRealmPath, loadableRealmPath, stackName }: R
         updateStack,
 
         push,
+        deleteIndexes,
         getClosestDate,
 
         loadRealm,
