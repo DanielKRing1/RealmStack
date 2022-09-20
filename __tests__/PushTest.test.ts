@@ -89,13 +89,13 @@ describe('RealmStackManager', () => {
         const stack1: RealmStack = realmStackManager.getStack(STACK_NAME1);
 
         expect((await stack1.getAllSnapshots()).toJSON()).toMatchSnapshot();
-        expect((await stack1.getList())).toMatchSnapshot();
+        expect((await stack1.getListJSON())).toMatchSnapshot();
 
         // Stack2
         const stack2: RealmStack = realmStackManager.getStack(STACK_NAME2);
 
         expect((await stack2.getAllSnapshots()).toJSON()).toMatchSnapshot();
-        expect((await stack2.getList())).toMatchSnapshot();
+        expect((await stack2.getListJSON())).toMatchSnapshot();
     });
 
     afterAll(async () => {

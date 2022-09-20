@@ -40,7 +40,7 @@ export type RealmStack = {
 
     getAllSnapshots: () => Promise<Realm.Results<RSSnapshot & Realm.Object>>;
     getStackRow: () => Promise<(RealmStackRow & Realm.Object) | undefined>;
-    getList: () => Promise<RSSnapshot[]>;
+    getListJSON: () => Promise<RSSnapshot[]>;
 
     deleteStack: () => Promise<void>;
     updateStack: (newSnapshotProperties: Dict<any>) => Promise<void>;

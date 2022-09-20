@@ -78,7 +78,7 @@ const initializeRealmStack = ({ metaRealmPath, loadableRealmPath, stackName }: R
      * 
      * @returns 
      */
-    const getList = async (): Promise<RSSnapshot[]> => {
+    const getListJSON = async (): Promise<RSSnapshot[]> => {
         const stackRow: (RealmStackRow & Realm.Object) | undefined = await getStackRow();
 
         try {
@@ -134,7 +134,7 @@ const initializeRealmStack = ({ metaRealmPath, loadableRealmPath, stackName }: R
      */
     const getClosestDate = async (searchDate: Date): Promise<number> => {
         // 1. Get Stack
-        const list: RSSnapshot[] = await getList();
+        const list: RSSnapshot[] = await getListJSON();
 
         if(list.length === 0 ) return -1;
 
@@ -168,7 +168,7 @@ const initializeRealmStack = ({ metaRealmPath, loadableRealmPath, stackName }: R
 
         getAllSnapshots,
         getStackRow,
-        getList,
+        getListJSON,
 
         deleteStack,
         updateStack,
