@@ -1,6 +1,8 @@
 import fs from 'fs';
 
 import MetaRealm from '@asianpersonn/metarealm';
+import RealmStackManager from '../src';
+
 
 import StackManager from '../src/RealmStackManager/realmStackManager';
 import { RealmStack } from '../src/RealmStack/types';
@@ -108,8 +110,7 @@ describe('createRealmStack', () => {
     });
 
     afterAll(async () => {
-        await MetaRealm.MetaRealmManager.closeAll();
-        await MetaRealm.LoadableRealmManager.closeAll();
+await RealmStackManager.closeAllStacks()
         
         if (fs.existsSync(TEST_DIRECTORY)) fs.rmSync(TEST_DIRECTORY, { recursive: true });
     });      

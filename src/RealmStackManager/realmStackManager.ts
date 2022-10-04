@@ -65,6 +65,10 @@ const createStackManager = (): RealmStackManager => {
 
       return stackNames.length;
     }
+    const closeAllStacks = async (): Promise<void> => {
+        await MetaRealm.MetaRealmManager.closeAll();
+        await MetaRealm.LoadableRealmManager.closeAll();
+    }
 
     const getLoadableStackNames = (metaRealmPath: string, loadableRealmPath: string): string[] => {
         const stackNames: Set<string> = new Set<string>();
@@ -93,6 +97,7 @@ const createStackManager = (): RealmStackManager => {
         createStack,
         rmStack,
         loadStacks,
+        closeAllStacks,
 
         getLoadableStackNames,
         getAllLoadedStackNames,

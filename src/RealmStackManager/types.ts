@@ -5,6 +5,7 @@ export type RealmStackManager = {
     createStack: (params: RSCreateParams) => Promise<RealmStack>;
     rmStack: (stackName: string) => void;
     loadStacks: (metaRealmPAth: string, loadableRealmPath: string) => Promise<number>;
+    closeAllStacks: () => Promise<void>;
 
     getLoadableStackNames: (metaRealmPath: string, loadableRealmPath: string) => string[];
     getAllLoadedStackNames: () => string[];
