@@ -89,7 +89,20 @@ const initializeRealmStack = ({ metaRealmPath, loadableRealmPath, stackName }: R
         }
     }
 
-    const deleteStack = async (): Promise<void> => await _deleteStackSchemas({ metaRealmPath, loadableRealmPath, stackName, reloadRealm });
+    const deleteStack = async (): Promise<void> => {
+        const loadedGraphRealm: Realm = await loadRealm();
+
+        // 1. Delete all objects in Realm
+        const allSnapshots: Realm.List<Realm.Object & RSSnapshot> = (await getStackRow()).list;
+        const stackRow: RealmStackRow & Realm.Object = await getStackRow();
+        loadedGraphRealm.write(() => {
+            loadedGraphRealm.delete(allSnapshots);
+            loadedGraphRealm.delete(stackRow);
+        });
+
+        // 2. Delete this Stack's schemas and reload without schemas
+        await _deleteStackSchemas({ metaRealmPath, loadableRealmPath, stackName, reloadRealm });
+    }
 
     const updateStack = async (newSnapshotProperties: Dict<any>): Promise<void> => await _updateStackSchemas({ metaRealmPath, loadableRealmPath, stackName, newSnapshotProperties, reloadRealm });
 
